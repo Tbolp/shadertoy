@@ -1,0 +1,12 @@
+{
+  "width": 600,
+  "height": 600,
+  "fragmentpath": "main4.fs",
+  "channels":[{
+    "path": "1.png",
+    "type": 0,
+    "filter": 0,
+    "wrap": 0
+  }],
+  "use4_5": true
+}
