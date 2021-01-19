@@ -1,0 +1,9 @@
+{
+  "width": 600,
+  "height": 600,
+  "pipeline":{
+    "image": {
+      "path": "examples/example3/image.fs"
+    }
+  }
+}

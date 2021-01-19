@@ -1,0 +1,14 @@
+{
+  "width": 600,
+  "height": 600,
+  "pipeline": {
+    "image": {
+      "path": "examples/example4/image.fs",
+      "textures": [
+        {
+          "path": "examples/example4/1.png"
+        }
+      ]
+    }
+  }
+}
