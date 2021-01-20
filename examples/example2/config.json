@@ -7,10 +7,22 @@
       "textures": [
         {
           "path": "buffer_a"
+        },
+        {
+          "path": "buffer_b"
+        },
+        {
+          "path": "buffer_c"
         }
       ]
     },
     "buffer_a": {
+      "path": "examples/example5/image.fs"
+    },
+    "buffer_b": {
+      "path": "examples/example6/image.fs"
+    },
+    "buffer_c": {
       "path": "examples/example1/image.fs"
     }
   }

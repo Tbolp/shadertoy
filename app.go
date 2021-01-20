@@ -96,10 +96,10 @@ uniform int       iFrame;                // shader playback frame
 //uniform float     iChannelTime[4];       // channel playback time (in seconds)
 //uniform vec3      iChannelResolution[4]; // channel resolution (in pixels)
 uniform vec4      iMouse;                // mouse pixel coords. xy: current (if MLB down), zw: click
-uniform sampler2D iChannel0;          // input channel. XX = 2D/Cube
-uniform sampler2D iChannel1;
-uniform sampler2D iChannel2;
-uniform sampler2D iChannel3;
+layout (binding = 0) uniform sampler2D iChannel0;          // input channel. XX = 2D/Cube
+layout (binding = 1) uniform sampler2D iChannel1;
+layout (binding = 2) uniform sampler2D iChannel2;
+layout (binding = 3) uniform sampler2D iChannel3;
 //uniform vec4      iDate;                 // (year, month, day, time in seconds)
 out vec4 fragColor;
 ` + commonStr + "\n" + string(content) + `
@@ -132,7 +132,7 @@ type PipelineConf struct {
 	Buffer_A *BufferConf
 	Buffer_B *BufferConf
 	Buffer_C *BufferConf
-	BUffer_D *BufferConf
+	Buffer_D *BufferConf
 	Image    *BufferConf
 	Common   *CommonConf
 }
@@ -155,21 +155,40 @@ func (this *PipelineConf) init() (err error) {
 			return
 		}
 	}
-	if this.Buffer_A == nil {
+	initBuffer := func(conf *BufferConf, name string) (err error) {
+		if conf == nil {
+			return
+		} else {
+			err = conf.init(commonStr)
+			if err != nil {
+				return
+			}
+			conf.name = name
+			gl.CreateFramebuffers(1, &conf.fbo)
+			var tex uint32
+			tex, err = DefaultTextureMgr().LoadTexture(name)
+			if err != nil {
+				return
+			}
+			gl.NamedFramebufferTexture(conf.fbo, gl.COLOR_ATTACHMENT0, tex, 0)
+		}
 		return
-	} else {
-		err = this.Buffer_A.init(commonStr)
-		if err != nil {
-			return
-		}
-		this.Buffer_A.name = "buffer_a"
-		gl.CreateFramebuffers(1, &this.Buffer_A.fbo)
-		var tex uint32
-		tex, err = DefaultTextureMgr().LoadTexture("buffer_a")
-		if err != nil {
-			return
-		}
-		gl.NamedFramebufferTexture(this.Buffer_A.fbo, gl.COLOR_ATTACHMENT0, tex, 0)
+	}
+	err = initBuffer(this.Buffer_A, "buffer_a")
+	if err != nil {
+		return
+	}
+	err = initBuffer(this.Buffer_B, "buffer_b")
+	if err != nil {
+		return
+	}
+	err = initBuffer(this.Buffer_C, "buffer_c")
+	if err != nil {
+		return
+	}
+	err = initBuffer(this.Buffer_D, "buffer_d")
+	if err != nil {
+		return
 	}
 	return
 }
@@ -304,6 +323,7 @@ func (this *ShaderToy) renderGL() {
 	this.render(this.conf.Pipeline.Buffer_A)
 	this.render(this.conf.Pipeline.Buffer_B)
 	this.render(this.conf.Pipeline.Buffer_C)
+	this.render(this.conf.Pipeline.Buffer_D)
 	this.render(this.conf.Pipeline.Image)
 }
 
