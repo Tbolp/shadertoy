@@ -35,7 +35,7 @@ func (this *TextureMgr) LoadTexture(name string) (tex uint32, err error) {
 			this.textures[name] = tex
 			return
 		} else {
-			tex, err = newTextureEx(name)
+			tex, err = newTexture(name)
 			if err == nil {
 				this.textures[name] = tex
 			}
@@ -191,12 +191,6 @@ func (this *PipelineConf) init() (err error) {
 		return
 	}
 	return
-}
-
-type pipelineUniform struct {
-	Width  float32
-	Height float32
-	Time   float32
 }
 
 type appConf struct {
@@ -437,7 +431,7 @@ func compileShader(source string, shaderType uint32) (uint32, error) {
 	return shader, nil
 }
 
-func newTextureEx(file string) (uint32, error) {
+func newTexture(file string) (uint32, error) {
 	imgFile, err := os.Open(file)
 	if err != nil {
 		return 0, fmt.Errorf("texture %q not found on disk: %v", file, err)
