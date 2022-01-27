@@ -237,6 +237,8 @@ func (this *ShaderToy) Exec() {
 		panic(err)
 	}
 
+	gl.Viewport(0, 0, int32(this.conf.Width), int32(this.conf.Height))
+
 	this.window.SetSizeCallback(func(w *glfw.Window, width int, height int) {
 		gl.Viewport(0, 0, int32(width), int32(height))
 	})
